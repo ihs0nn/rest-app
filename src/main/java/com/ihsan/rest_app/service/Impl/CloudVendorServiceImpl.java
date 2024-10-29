@@ -1,5 +1,6 @@
 package com.ihsan.rest_app.service.Impl;
 
+import com.ihsan.rest_app.exception.CloudVendorNotFoundException;
 import com.ihsan.rest_app.model.CloudVendor;
 import com.ihsan.rest_app.repository.CloudVendorRepository;
 import com.ihsan.rest_app.service.CloudVendorService;
@@ -16,7 +17,6 @@ public class CloudVendorServiceImpl implements CloudVendorService {
     public CloudVendorServiceImpl(CloudVendorRepository cloudVendorRepository) {
         this.cloudVendorRepository = cloudVendorRepository;
     }
-
 
 
 
@@ -41,6 +41,8 @@ public class CloudVendorServiceImpl implements CloudVendorService {
 
     @Override
     public CloudVendor getCloudVendor(String cloudVendorId) {
+        if(cloudVendorRepository.findById(cloudVendorId).isEmpty())
+            throw new CloudVendorNotFoundException("Requested Cloud Vendor does not exist");
         return cloudVendorRepository.findById(cloudVendorId).get();
     }
 
